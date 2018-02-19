@@ -1,4 +1,6 @@
-FROM amberframework/amber:v0.6.4 as builder
+FROM ysbaddaden/crystal-alpine:0.24.1 as builder
+
+RUN apk add openssl-dev yaml-dev nodejs
 
 WORKDIR /src
 
@@ -11,7 +13,9 @@ RUN npm install
 
 RUN crystal build src/hello.cr
 
-FROM crystallang/crystal:0.24.1
+FROM alpine:3.7
+
+RUN apk add --update gc openssl yaml pcre libevent libgcc
 
 RUN mkdir /app
 WORKDIR /app
